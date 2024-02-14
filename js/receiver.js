@@ -11,9 +11,6 @@ const StreamType = {
 }
 const TEST_STREAM_TYPE = StreamType.DASH
 
-const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-const LOG_TAG = 'MyAPP.LOG';
-
 castDebugLogger.loggerLevelByEvents = {
   'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
   'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
@@ -25,9 +22,9 @@ castDebugLogger.loggerLevelByTags = {
 };
 
 context.addEventListener(cast.framework.system.EventType.READY, () => {
-  if (!castDebugLogger.debugOverlayElement_) {
+  // if (!castDebugLogger.debugOverlayElement_) {
       castDebugLogger.setEnabled(true);
-  }
+  // }
 });
 
 function makeRequest (method, url) {
