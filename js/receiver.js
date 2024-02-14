@@ -83,7 +83,7 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       requestInfo.headers = headers
     };
-    const data = request["media"]['contentUrl'];
+    const data = request["media"]['contentId'];
     console.log("intercept", data);
     console.log("intercept22", headers[mediaTokenKey]);
     console.log("intercept22", headers[authorizationKey]);
@@ -135,7 +135,6 @@ playerManager.setMessageInterceptor(
             metadata.subtitle = "item.author";
 
             request.media.metadata = metadata;
-    //         // Resolve request
             resolve(request);
     //       }
       });
