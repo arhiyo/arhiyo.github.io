@@ -7,6 +7,17 @@ const StreamType = {
   HLS: 'application/x-mpegurl'
 }
 const TEST_STREAM_TYPE = StreamType.DASH
+const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+
+
+context.addEventListener(cast.framework.system.EventType.READY, () => {
+      // Enable debug logger and show a 'DEBUG MODE' overlay at top left corner.
+  });
+
+castDebugLogger.loggerLevelByEvents = {
+  'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
+  'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
+}
 
 
 function makeRequest (method, url) {
@@ -54,7 +65,10 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       // requestInfo.headers = headers
     };
+    castDebugLogger.error("custom_tag", "message");
+     console.log("listen", "event");
     const data = request["media"]['contentId'];
+    const data2 = request["media"]['contentUrl'];
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
     }
@@ -66,6 +80,11 @@ playerManager.setMessageInterceptor(
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
+        let metadata = new cast.framework.messages.GenericMediaMetadata();
+        metadata.title = data;
+        metadata.subtitle = data2;
+
+        request.media.metadata = metadata;
         resolve(request);
       });
   });
