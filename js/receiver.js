@@ -11,6 +11,25 @@ const StreamType = {
 }
 const TEST_STREAM_TYPE = StreamType.DASH
 
+const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+const LOG_TAG = 'MyAPP.LOG';
+
+castDebugLogger.loggerLevelByEvents = {
+  'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
+  'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
+}
+
+// Set verbosity level for custom tags.
+castDebugLogger.loggerLevelByTags = {
+    [LOG_TAG]: cast.framework.LoggerLevel.DEBUG,
+};
+
+context.addEventListener(cast.framework.system.EventType.READY, () => {
+  if (!castDebugLogger.debugOverlayElement_) {
+      castDebugLogger.setEnabled(true);
+  }
+});
+
 function makeRequest (method, url) {
   return new Promise(function (resolve, reject) {
     let xhr = new XMLHttpRequest();
@@ -57,6 +76,7 @@ playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
     castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request');
+    castDebugLogger.info(LOG_TAG, request);
 
     playerManager.setPlaybackConfig(playbackConfig);
     // Map contentId to entity
@@ -111,30 +131,6 @@ playerManager.setMessageInterceptor(
     //         castDebugLogger.warn(LOG_TAG, 'Playable URL:', request.media.contentUrl);
     //         request.media.contentType = 'application/x-mpegurl'
     //         // Add metadata
-            let metadata = new cast.framework.messages.GenericMediaMetadata();
-            metadata.title = "item.title";
-            metadata.subtitle = "item.author";
-
-            request.media.metadata = metadata;
-    //         // Resolve request
-            resolve(request);
-    //       }
-      });
-    // });
-  });
-
-
-playerManager.setMessageInterceptor(
-  cast.framework.messages.MessageType.SET_CREDENTIALS,
-  request => {
-    castDebugLogger.info(LOG_TAG, 'Intercepting SET_CREDENTIALS request');
-      headers[mediaTokenKey] = request.credentials['mediaTokenKey'];
-      headers[authorizationKey] = request.credentials['authorizationKey'];
-    
-        console.log("intercept", data);
-
-    // resolve(request);
-    return new Promise((resolve, reject) => {
             let metadata = new cast.framework.messages.GenericMediaMetadata();
             metadata.title = "item.title";
             metadata.subtitle = "item.author";
