@@ -83,8 +83,10 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       requestInfo.headers = headers
     };
-        const data = request["media"]['contentUrl'];
-        console.log("intercept", data);
+    const data = request["media"]['contentUrl'];
+    console.log("intercept", data);
+    console.log("intercept22", headers[mediaTokenKey]);
+    console.log("intercept22", headers[authorizationKey]);
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
     }
