@@ -57,18 +57,18 @@ castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.2.2';
 
 
-playerManager.addEventListener(cast.framework.events.category.CORE,
-    event => {
-        console.log("listen", event);
-            console.log("Promise", "prog");
-    });
+// playerManager.addEventListener(cast.framework.events.category.CORE,
+//     event => {
+//         console.log("listen", event);
+//             console.log("Promise", "prog");
+//     });
 const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
 const playbackConfig = new cast.framework.PlaybackConfig();
  const headers = {};
     
 
-            console.log("Promise", "prog");
+console.log("Promise", "prog");
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
@@ -83,7 +83,7 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       requestInfo.headers = headers
     };
-        const data = request["media"]['contentId'];
+        const data = request["media"]['contentUrl'];
         console.log("intercept", data);
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
