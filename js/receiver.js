@@ -36,7 +36,7 @@ function makeRequest (method, url) {
 
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = true;
-castReceiverOptions.shakaVersion = '4.7.9';
+castReceiverOptions.shakaVersion = '4.2.2';
 
 const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
@@ -52,15 +52,27 @@ playerManager.setMessageInterceptor(
       headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-      requestInfo.headers = headers
+      // requestInfo.headers = headers
     };
+    const data = request["media"]['contentId'];
+    const title = request["media"]['title'];
+    const subtitle = request["media"]['subtitle'];
+    if (request.media && request.media.entity) {
+      request.media.contentId = request.media.entity;
+    }
 
+    request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
+        let metadata = new cast.framework.messages.GenericMediaMetadata();
+        metadata.title = title;
+        metadata.subtitle = subtitle;
+
+        request.media.metadata = metadata;
         resolve(request);
       });
   });
