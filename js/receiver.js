@@ -58,7 +58,6 @@ playerManager.setMessageInterceptor(
     const title = request.media.metadata.title;
     const subtitle = request.media.metadata.subtitle;
 
-    request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
