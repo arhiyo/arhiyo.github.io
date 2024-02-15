@@ -52,10 +52,10 @@ playerManager.setMessageInterceptor(
       headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-      // requestInfo.headers = headers
+      requestInfo.headers = headers
     };
     const data = request["media"]['contentId'];
-    const title = request["media"];
+    const title = request.media.metadata.title;
 
     request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
