@@ -52,7 +52,7 @@ playerManager.setMessageInterceptor(
       headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-      requestInfo.headers = headers
+      // requestInfo.headers = headers
     };
     const data = request["media"]['contentId'];
     const title = request.media.customData['title'];
