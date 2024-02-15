@@ -36,7 +36,7 @@ function makeRequest (method, url) {
 
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = true;
-castReceiverOptions.shakaVersion = '4.2.2';
+castReceiverOptions.shakaVersion = '4.7.9';
 
 const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
@@ -52,7 +52,7 @@ playerManager.setMessageInterceptor(
       headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-      // requestInfo.headers = headers
+      requestInfo.headers = headers
     };
 
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
