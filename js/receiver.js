@@ -69,7 +69,7 @@ playerManager.setMessageInterceptor(
         let metadata = new cast.framework.messages.GenericMediaMetadata();
         metadata.title = title;
         metadata.subtitle = subtitle;
-        metadata.images = [artworkUri];
+        metadata.images = artworkUri;
 
         request.media.metadata = metadata;
         resolve(request);
