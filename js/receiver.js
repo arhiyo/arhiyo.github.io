@@ -57,7 +57,6 @@ playerManager.setMessageInterceptor(
     const data = request["media"]['contentId'];
     const title = request.media.metadata.title;
     const subtitle = request.media.metadata.subtitle;
-    const artworkUri = request.media.metadata.artworkUri;
 
     request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
@@ -67,7 +66,7 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
         let metadata = new cast.framework.messages.GenericMediaMetadata();
-        metadata.title = artworkUri;
+        metadata.title = title;
         metadata.subtitle = subtitle;
 
         request.media.metadata = metadata;
