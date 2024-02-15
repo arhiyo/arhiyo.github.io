@@ -55,13 +55,21 @@ playerManager.setMessageInterceptor(
       requestInfo.headers = headers
     };
     const data = request["media"]['contentId'];
+    const title = request["media"]["metadata"];
+    const subtitle = request["media"];
 
+    request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
+        let metadata = new cast.framework.messages.GenericMediaMetadata();
+        metadata.title = title;
+        metadata.subtitle = subtitle;
+
+        request.media.metadata = metadata;
         resolve(request);
       });
   });
