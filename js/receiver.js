@@ -55,8 +55,8 @@ playerManager.setMessageInterceptor(
       requestInfo.headers = headers
     };
     const data = request["media"]['contentId'];
-    const title = request.media.metadata.title;
-    const subtitle = request.media.metadata.subtitle;
+    const title = request.media.customData['title'];
+    const subtitle = request.media.customData['subtitle'];
 
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
