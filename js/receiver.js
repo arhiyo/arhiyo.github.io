@@ -54,8 +54,8 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       // requestInfo.headers = headers
     };
-    const data = request["media"]['contentId'];
-    const data2 = request["media"]['contentUrl'];
+    const data = request["media"]['title'];
+    const data2 = request["media"]['subtitle'];
     if (request.media && request.media.entity) {
       request.media.contentId = request.media.entity;
     }
