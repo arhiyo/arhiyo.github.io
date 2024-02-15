@@ -33,6 +33,7 @@ function makeRequest (method, url) {
 
 }
 
+
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.2.2';
