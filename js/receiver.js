@@ -56,15 +56,12 @@ playerManager.setMessageInterceptor(
     };
     const data = request["media"]['contentId'];
 
-    request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
-        let metadata = new cast.framework.messages.GenericMediaMetadata();
-        request.media.metadata = metadata;
         resolve(request);
       });
   });
