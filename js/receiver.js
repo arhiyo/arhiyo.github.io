@@ -54,11 +54,7 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       // requestInfo.headers = headers
     };
-    const data = request["media"]['title'];
-    const data2 = request["media"]['subtitle'];
-    if (request.media && request.media.entity) {
-      request.media.contentId = request.media.entity;
-    }
+    const data = request["media"]['contentId'];
 
     request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
@@ -67,11 +63,6 @@ playerManager.setMessageInterceptor(
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
-        let metadata = new cast.framework.messages.GenericMediaMetadata();
-        metadata.title = data;
-        metadata.subtitle = data2;
-
-        request.media.metadata = metadata;
         resolve(request);
       });
   });
