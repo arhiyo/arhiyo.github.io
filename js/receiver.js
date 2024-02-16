@@ -74,4 +74,12 @@ playerManager.setMessageInterceptor(
   });
 
 
+playerManager.setMessageInterceptor(
+  cast.framework.messages.MessageType.LOAD,
+  request => {
+    return new Promise((resolve, reject) => {
+        resolve(request);
+      });
+  });
+
 context.start(castReceiverOptions)
