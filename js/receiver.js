@@ -37,7 +37,7 @@ playerManager.setMessageInterceptor(
   request => {
       castDebugLogger.setEnabled(true);
       castDebugLogger.showDebugLogs(true);
-    castDebugLogger.info(LOG_TAG, 'Intercepting LOAD request');
+    castDebugLogger.debug(LOG_TAG, 'Intercepting LOAD request');
 
     headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
     headers[authorizationKey] = request.media.customData['authorizationKey'];
