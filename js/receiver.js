@@ -16,26 +16,12 @@ const authorizationKey = 'Authorization'
 const playbackConfig = new cast.framework.PlaybackConfig();
 const headers = {};
 
-const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-const LOG_TAG = 'MyAPP.LOG';
-context.addEventListener(cast.framework.system.EventType.READY, () => {
-      castDebugLogger.setEnabled(true);
-      castDebugLogger.showDebugLogs(true);
-});
-
-
-// Set verbosity level for custom tags.
-castDebugLogger.loggerLevelByTags = {
-    [LOG_TAG]: cast.framework.LoggerLevel.DEBUG,
-};
-
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    castDebugLogger.debug(LOG_TAG, 'Intercepting LOAD request');
 
-    headers[mediaTokenKey] = request.customData.mediaTokenKey;
-    headers[authorizationKey] = request.customData.authorizationKey;
+    headers[mediaTokenKey] = request['customData']['mediaTokenKey'];
+    headers[authorizationKey] = request['customData']['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
         // console.log("listen", headers[mediaTokenKey]);
@@ -46,7 +32,6 @@ playerManager.setMessageInterceptor(
     playerManager.setPlaybackConfig(playbackConfig);
     const data = request.media.contentId;
 
-        // console.log("listen", data);
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     request.media.contentType = StreamType.HLS;
