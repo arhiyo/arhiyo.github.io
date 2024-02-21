@@ -44,15 +44,15 @@ playerManager.setMessageInterceptor(
     headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-        console.log("listen", headers[mediaTokenKey]);
-        console.log("listen", "112322");
-      requestInfo.headers = headers
+        // console.log("listen", headers[mediaTokenKey]);
+        // console.log("listen", "112322");
+      // requestInfo.headers = headers
     };
 
     playerManager.setPlaybackConfig(playbackConfig);
     const data = request["media"]['contentId'];
 
-        console.log("listen", data);
+        // console.log("listen", data);
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     request.media.contentType = StreamType.HLS;
