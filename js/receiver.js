@@ -26,16 +26,16 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       requestInfo.headers = headers
     };
-    const data = request["media"]['contentUrl'];
+    const data = request["media"]['contentId'];
     const title = request.media.customData['title'];
     const subtitle = request.media.customData['subtitle'];
 
-    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
-    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
-
-    request.media.contentType = StreamType.HLS;
 
     request.media.contentUrl = data;
+    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
+    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
+    request.media.contentType = StreamType.HLS;
+
     return new Promise((resolve, reject) => {
         let metadata = new cast.framework.messages.GenericMediaMetadata();
         metadata.title = title;
