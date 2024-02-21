@@ -46,7 +46,6 @@
         cast.framework.messages.MessageType.LOAD,
         loadRequestData => {
           message.innerText = 'Received: ' + loadRequestData.media['contentUrl'];
-          message1.innerText = 'Received: ' + loadRequestData["media"]["customData"]['mediaTokenKey'];
           message2.innerText = 'Received: ' +  JSON.stringify(loadRequestData);
           return loadRequestData;
         }
