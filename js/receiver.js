@@ -1,7 +1,6 @@
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
 
-const SAMPLE_URL = "https://storage.googleapis.com/cpe-sample-media/content.json";
 const StreamType = {
   DASH: 'application/dash+xml',
   HLS: 'application/x-mpegurl'
@@ -47,12 +46,11 @@ playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
     playerManager.setPlaybackConfig(playbackConfig);
-    // Map contentId to entity
-      headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
-      headers[authorizationKey] = request.media.customData['authorizationKey'];
+    headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
+    headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
-      // requestInfo.headers = headers
+      requestInfo.headers = headers
     };
     const data = request["media"]['contentId'];
     const title = request.media.customData['title'];
@@ -73,13 +71,5 @@ playerManager.setMessageInterceptor(
       });
   });
 
-
-playerManager.setMessageInterceptor(
-  cast.framework.messages.MessageType.LOAD,
-  request => {
-    return new Promise((resolve, reject) => {
-        resolve(request);
-      });
-  });
 
 context.start(castReceiverOptions)
