@@ -1,62 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .message-container {
-      text-align: center;
-      margin-top: 50px;
-    }
-    .message {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-  </style>
     <meta charset="utf-8">
     <title>Cast CAF Receiver</title>
     <script src="https://cdn.jsdelivr.net/npm/mux.js@5.5.3/dist/mux.min.js">  </script>
 
     <!-- Load the Shaka Player library -->
-<script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.8/dist/shaka-player.compiled.js"></script> 
-<script src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.7.8/shaka-player.compiled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.8/dist/shaka-player.compiled.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.7.8/shaka-player.compiled.js"></script>
     <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
-    
+    <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
+
   </head>
   <body>
-  <script>
-    // Initialize the Cast Receiver SDK
-    const context = cast.framework.CastReceiverContext.getInstance();
-    let castReceiverOptions = new cast.framework.CastReceiverOptions();
-    const playerManager = context.getPlayerManager();
-    var message = document.getElementById('message1');
-    var message1 = document.getElementById('message2');
-    var message2 = document.getElementById('message3');
-
-    playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.LOAD,
-        loadRequestData => {
-          message.innerText = 'Received: ' + loadRequestData.media.contentUrl;
-          message1.innerText = 'Received: ' + loadRequestData.customData.mediaTokenKey;
-          message2.innerText = 'Received: ' +  JSON.stringify(loadRequestData);
-          return loadRequestData;
-        }
-      );
-
-    // Start the Cast Receiver Manager
-    context.start(castReceiverOptions)
-
-  </script>
     <cast-media-player></cast-media-player>
-    
 
-  <div class="message-container">
-    <div class="message" id="message1">Waiting for content to cast...</div>
-    <div class="message" id="message2">-</div>
-    <div class="message" id="message3">-</div>
-  </div>
 
   </body>
     <footer>
