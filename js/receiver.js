@@ -18,7 +18,6 @@ const headers = {};
 
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 const LOG_TAG = 'MyAPP.LOG';
-cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 context.addEventListener(cast.framework.system.EventType.READY, () => {
       castDebugLogger.setEnabled(true);
       castDebugLogger.showDebugLogs(true);
