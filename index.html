@@ -38,14 +38,14 @@
     const context = cast.framework.CastReceiverContext.getInstance();
     let castReceiverOptions = new cast.framework.CastReceiverOptions();
     const playerManager = context.getPlayerManager();
-    var message = document.getElementById('message');
+    var message = document.getElementById('message1');
     var message1 = document.getElementById('message2');
     var message2 = document.getElementById('message3');
 
     playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.LOAD,
         loadRequestData => {
-          message.innerText = 'Received: ' + loadRequestData["media"]['contentUrl'];
+          message.innerText = 'Received: ' + loadRequestData.media['contentUrl'];
           message1.innerText = 'Received: ' + loadRequestData["media"]["customData"]['mediaTokenKey'];
           message2.innerText = 'Received: ' + loadRequestData["media"]["customData"][['authorizationKey'];
           return loadRequestData;
