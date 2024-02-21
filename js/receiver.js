@@ -20,9 +20,8 @@ const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 const LOG_TAG = 'MyAPP.LOG';
 
 context.addEventListener(cast.framework.system.EventType.READY, () => {
-  if (!castDebugLogger.debugOverlayElement_) {
       castDebugLogger.setEnabled(true);
-  }
+      castDebugLogger.showDebugLogs(true);
 });
 
 castDebugLogger.loggerLevelByEvents = {
