@@ -35,8 +35,8 @@ playerManager.setMessageInterceptor(
   request => {
     castDebugLogger.debug(LOG_TAG, 'Intercepting LOAD request');
 
-    headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
-    headers[authorizationKey] = request.media.customData['authorizationKey'];
+    headers[mediaTokenKey] = request.customData.mediaTokenKey;
+    headers[authorizationKey] = request.customData.authorizationKey;
 
     playbackConfig.manifestRequestHandler = requestInfo => {
         // console.log("listen", headers[mediaTokenKey]);
@@ -45,7 +45,7 @@ playerManager.setMessageInterceptor(
     };
 
     playerManager.setPlaybackConfig(playbackConfig);
-    const data = request["media"]['contentId'];
+    const data = request.media.contentId;
 
         // console.log("listen", data);
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
