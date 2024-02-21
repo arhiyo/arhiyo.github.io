@@ -20,12 +20,10 @@ const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 const LOG_TAG = 'MyAPP.LOG';
 
 context.addEventListener(cast.framework.system.EventType.READY, () => {
+      castDebugLogger.setEnabled(true);
+      castDebugLogger.showDebugLogs(true);
 });
 
-castDebugLogger.loggerLevelByEvents = {
-    [LOG_TAG1]: cast.framework.LoggerLevel.WARNING,
-    [LOG_TAG2]: cast.framework.LoggerLevel.DEBUG,
-}
 
 // Set verbosity level for custom tags.
 castDebugLogger.loggerLevelByTags = {
@@ -35,8 +33,6 @@ castDebugLogger.loggerLevelByTags = {
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-      castDebugLogger.setEnabled(true);
-      castDebugLogger.showDebugLogs(true);
     castDebugLogger.debug(LOG_TAG, 'Intercepting LOAD request');
 
     headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
