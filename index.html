@@ -5,11 +5,14 @@
     body {
       font-family: Arial, sans-serif;
     }
-    #message {
+    .message-container {
       text-align: center;
-      margin-top: 100px;
+      margin-top: 50px;
+    }
+    .message {
       font-size: 24px;
       color: #333;
+      margin-bottom: 20px;
     }
   </style>
     <meta charset="utf-8">
@@ -24,19 +27,27 @@
   </head>
   <body>
 
+  <div class="message-container">
   <div id="message">Waiting for content to cast...</div>
-
+  <div id="message1">Waiting for content to cast...</div>
+  <div id="message2">Waiting for content to cast...</div>
+  </div>
+  
   <script>
     // Initialize the Cast Receiver SDK
     const context = cast.framework.CastReceiverContext.getInstance();
     let castReceiverOptions = new cast.framework.CastReceiverOptions();
     const playerManager = context.getPlayerManager();
     var message = document.getElementById('message');
+    var message1 = document.getElementById('message');
+    var message2 = document.getElementById('message');
 
     playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.LOAD,
         loadRequestData => {
-          message.innerText = 'Received: ' + loadRequestData["media"]['contentId'];
+          message.innerText = 'Received: ' + loadRequestData["media"]['contentUrl'];
+          message1.innerText = 'Received: ' + loadRequestData.media.customData['mediaTokenKey'];
+          message2.innerText = 'Received: ' + loadRequestData.media.customData['authorizationKey'];
           return loadRequestData;
         }
       );
