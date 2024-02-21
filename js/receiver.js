@@ -7,32 +7,6 @@ const StreamType = {
 }
 const TEST_STREAM_TYPE = StreamType.DASH
 
-function makeRequest (method, url) {
-  return new Promise(function (resolve, reject) {
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onload = function () {
-      if (this.status >= 200 && this.status < 300) {
-        resolve(JSON.parse(xhr.response));
-      } else {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText
-        });
-      }
-    };
-    xhr.onerror = function () {
-      reject({
-        status: this.status,
-        statusText: xhr.statusText
-      });
-    };
-    xhr.send();
-  });
-
-}
-
-
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.2.2';
@@ -52,7 +26,7 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
       requestInfo.headers = headers
     };
-    const data = request["media"]['contentId'];
+    const data = request["media"]['contentUrl'];
     const title = request.media.customData['title'];
     const subtitle = request.media.customData['subtitle'];
 
@@ -61,6 +35,7 @@ playerManager.setMessageInterceptor(
 
     request.media.contentType = StreamType.HLS;
 
+    request.media.contentUrl = data;
     return new Promise((resolve, reject) => {
         let metadata = new cast.framework.messages.GenericMediaMetadata();
         metadata.title = title;
