@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Chromecast Receiver App</title>
+<html lang="en">
+  <head>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,24 +12,43 @@
       color: #333;
     }
   </style>
-</head>
-<body>
+    <meta charset="utf-8">
+    <title>Cast CAF Receiver</title>
+    <script src="https://cdn.jsdelivr.net/npm/mux.js@5.5.3/dist/mux.min.js">  </script>
+
+    <!-- Load the Shaka Player library -->
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.8/dist/shaka-player.compiled.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.7.8/shaka-player.compiled.js"></script>
+    <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
+    
+  </head>
+  <body>
+
   <div id="message">Waiting for content to cast...</div>
 
   <script>
     // Initialize the Cast Receiver SDK
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-    var castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+    const context = cast.framework.CastReceiverContext.getInstance();
+    let castReceiverOptions = new cast.framework.CastReceiverOptions();
+    const playerManager = context.getPlayerManager();
     var message = document.getElementById('message');
 
-    // Setup the message listener for incoming messages
-    castReceiverManager.onMessage = function(event) {
-      var data = event.data;
-      message.innerText = 'Received: ' + data;
-    };
+    playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.LOAD,
+        loadRequestData => {
+          message.innerText = 'Received: ' + loadRequestData["media"]['contentId'];
+          return loadRequestData;
+        }
+      );
 
     // Start the Cast Receiver Manager
-    castReceiverManager.start({statusText: 'Application is starting'});
+    context.start(castReceiverOptions)
+
   </script>
-</body>
+  </body>
+
+    <footer>
+
+  </footer>
 </html>
+
