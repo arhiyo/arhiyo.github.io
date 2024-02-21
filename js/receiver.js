@@ -23,8 +23,8 @@ context.addEventListener(cast.framework.system.EventType.READY, () => {
 });
 
 castDebugLogger.loggerLevelByEvents = {
-  'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
-  'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
+    [LOG_TAG1]: cast.framework.LoggerLevel.WARNING,
+    [LOG_TAG2]: cast.framework.LoggerLevel.DEBUG,
 }
 
 // Set verbosity level for custom tags.
