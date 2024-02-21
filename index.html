@@ -32,22 +32,22 @@
     <div class="message" id="message2">-</div>
     <div class="message" id="message3">-</div>
   </div>
-  
+
   <script>
     // Initialize the Cast Receiver SDK
     const context = cast.framework.CastReceiverContext.getInstance();
     let castReceiverOptions = new cast.framework.CastReceiverOptions();
     const playerManager = context.getPlayerManager();
     var message = document.getElementById('message');
-    var message1 = document.getElementById('message');
-    var message2 = document.getElementById('message');
+    var message1 = document.getElementById('message2');
+    var message2 = document.getElementById('message3');
 
     playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.LOAD,
         loadRequestData => {
           message.innerText = 'Received: ' + loadRequestData["media"]['contentUrl'];
-          message1.innerText = 'Received: ' + loadRequestData.media.customData['mediaTokenKey'];
-          message2.innerText = 'Received: ' + loadRequestData.media.customData['authorizationKey'];
+          message1.innerText = 'Received: ' + loadRequestData["media"]["customData"]['mediaTokenKey'];
+          message2.innerText = 'Received: ' + loadRequestData["media"]["customData"][['authorizationKey'];
           return loadRequestData;
         }
       );
