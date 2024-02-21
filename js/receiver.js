@@ -19,28 +19,25 @@ const headers = {};
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
-    playerManager.setPlaybackConfig(playbackConfig);
     headers[mediaTokenKey] = request.media.customData['mediaTokenKey'];
     headers[authorizationKey] = request.media.customData['authorizationKey'];
 
     playbackConfig.manifestRequestHandler = requestInfo => {
+        console.log("listen", headers[mediaTokenKey]);
+        console.log("listen", "112322");
       requestInfo.headers = headers
     };
-    const data = request["media"]['contentId'];
-    const title = request.media.customData['title'];
-    const subtitle = request.media.customData['subtitle'];
 
+    playerManager.setPlaybackConfig(playbackConfig);
+    const data = request["media"]['contentId'];
+
+        console.log("listen", data);
     request.media.contentUrl = data;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     request.media.contentType = StreamType.HLS;
 
     return new Promise((resolve, reject) => {
-        let metadata = new cast.framework.messages.GenericMediaMetadata();
-        metadata.title = title;
-        metadata.subtitle = subtitle;
-
-        request.media.metadata = metadata;
         resolve(request);
       });
   });
