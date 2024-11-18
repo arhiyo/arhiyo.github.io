@@ -41,7 +41,6 @@ playerManager.setMessageInterceptor(
         const label = document.getElementById("first-name");
 
     return new Promise((resolve, reject) => {
-        label.textContent = `then: ${JSON.stringify(request)}`;
         resolve(request);
       }).then(response => {
         label.textContent = `then: ${JSON.stringify(response)}`;
