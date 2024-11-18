@@ -47,6 +47,7 @@ playerManager.setMessageInterceptor(
       }).then(response => {
         console.log('Request resolved:', response);
     }).catch(error => {
+      request.media.title = error
         console.error('Error caught:', error);
     });
   });
