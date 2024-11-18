@@ -36,9 +36,14 @@ playerManager.setMessageInterceptor(
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     request.media.contentType = StreamType.HLS;
 
+    
     return new Promise((resolve, reject) => {
         resolve(request);
-      });
+      }).then(response => {
+        console.log('Request resolved:', response);
+    }).catch(error => {
+        console.error('Error caught:', error);
+    });
   });
 
 
