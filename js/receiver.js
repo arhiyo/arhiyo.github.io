@@ -37,13 +37,15 @@ playerManager.setMessageInterceptor(
     request.media.contentType = StreamType.HLS;
 
     
+    
+        const label = document.getElementById("first-name");
+
     return new Promise((resolve, reject) => {
         resolve(request);
       }).then(response => {
-        console.log('Request resolved:', response);
+        label.textContent = `then: ${JSON.stringify(response)}`;
     }).catch(error => {
-      request.media.title = error
-        console.error('Error caught:', error);
+        label.textContent = `Error: ${JSON.stringify(error)}`;
     });
   });
 
