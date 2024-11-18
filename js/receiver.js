@@ -8,7 +8,7 @@ const StreamType = {
 const TEST_STREAM_TYPE = StreamType.DASH
 
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
-castReceiverOptions.useShakaForHls = true;
+castReceiverOptions.useShakaForHls = false;
 castReceiverOptions.shakaVersion = '4.2.2';
 
 const mediaTokenKey = 'MEDIA-TOKEN'
