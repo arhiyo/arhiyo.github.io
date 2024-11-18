@@ -15,6 +15,11 @@ const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
 const playbackConfig = new cast.framework.PlaybackConfig();
 const headers = {};
+const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+
+        castDebugLogger.setEnabled(true);
+      castDebugLogger.showDebugLogs(true);
+      castDebugLogger.clearDebugLogs(true);
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
