@@ -42,9 +42,7 @@ playerManager.setMessageInterceptor(
 
     return new Promise((resolve, reject) => {
         resolve(request);
-      }).then(response => {
-        label.textContent = `then: ${JSON.stringify(response)}`;
-    }).catch(error => {
+      }).catch(error => {
         label.textContent = `Error: ${JSON.stringify(error)}`;
     });
   });
