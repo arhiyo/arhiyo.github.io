@@ -11,6 +11,28 @@ let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = false;
 castReceiverOptions.shakaVersion = '4.2.2';
 
+function adjustPlayerSize() {
+  const player = document.querySelector("cast-media-player");
+  const video = player?.querySelector("video");
+
+  if (!video) return; // Ensure the video element exists
+
+  video.onloadedmetadata = () => {
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const screenAspect = window.innerWidth / window.innerHeight;
+
+    if (videoAspect > screenAspect) {
+      // Landscape (16:9) - Fill width
+      player.style.width = "100vw";
+      player.style.height = "auto";
+    } else {
+      // Portrait (9:16) - Fill height
+      player.style.width = "auto";
+      player.style.height = "100vh";
+    }
+  };
+}
+
 const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
 const playbackConfig = new cast.framework.PlaybackConfig();
@@ -40,6 +62,8 @@ playerManager.setMessageInterceptor(
     
         const label = document.getElementById("first-name");
 
+  setTimeout(adjustPlayerSize, 1000);
+    
     return new Promise((resolve, reject) => {
         resolve(request);
       }).catch(error => {
@@ -47,5 +71,6 @@ playerManager.setMessageInterceptor(
     });
   });
 
+window.addEventListener("resize", adjustPlayerSize);
 
 context.start(castReceiverOptions)
