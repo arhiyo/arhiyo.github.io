@@ -62,7 +62,6 @@ playerManager.setMessageInterceptor(
     
         const label = document.getElementById("first-name");
 
-  setTimeout(adjustPlayerSize, 1000);
     
     return new Promise((resolve, reject) => {
         resolve(request);
