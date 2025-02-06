@@ -9,7 +9,7 @@ const TEST_STREAM_TYPE = StreamType.DASH
 
 let castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = false;
-castReceiverOptions.shakaVersion = '4.2.2';
+castReceiverOptions.shakaVersion = '4.13.2';
 
 function adjustPlayerSize() {
   const player = document.querySelector("cast-media-player");
