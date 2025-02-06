@@ -33,12 +33,6 @@ function adjustPlayerSize() {
   };
 }
 
-  const player = document.querySelector("cast-media-player");
-  const video = player?.querySelector("video");
-
-      player.style.width = "auto";
-      player.style.height = "100vh";
-
 const mediaTokenKey = 'MEDIA-TOKEN'
 const authorizationKey = 'Authorization'
 const playbackConfig = new cast.framework.PlaybackConfig();
