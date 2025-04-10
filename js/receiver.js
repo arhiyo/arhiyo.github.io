@@ -19,7 +19,13 @@ castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.2.2';
 
 console.log('[Receiver] Starting setup...');
-
+cast.debug.setLoggerLevel(cast.framework.LoggerLevel.DEBUG);
+cast.debug.setLoggerLevelByTags({
+  'CAST_API': cast.framework.LoggerLevel.DEBUG,
+  'CAF_RECEIVER': cast.framework.LoggerLevel.DEBUG,
+  'MEDIA': cast.framework.LoggerLevel.DEBUG,
+  'PLAYER': cast.framework.LoggerLevel.DEBUG
+});
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
