@@ -21,13 +21,9 @@ castReceiverOptions.shakaVersion = '4.2.2';
 console.log('[Receiver] Starting setup...');
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 
-cast.framework.CastReceiverContext.getInstance().addEventListener(cast.framework.system.EventType.READY, () => {
-  if (!castDebugLogger.debugOverlayElement_) {
-      castDebugLogger.setEnabled(true);
+castDebugLogger.setEnabled(true);
       castDebugLogger.showDebugLogs(true);
       castDebugLogger.clearDebugLogs();
-  }
-});
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
@@ -66,7 +62,7 @@ playerManager.setMessageInterceptor(
       return Promise.resolve(request);
     } catch (error) {
       logError('[Receiver] Error in LOAD message interceptor:', error);
-      castDebugLogger.debug('Tag1', `${message} ${error?.message || error}`);
+      request.media.metadata.title = `${message} ${error?.message || error}`
       return Promise.reject(error);
     }
   }
