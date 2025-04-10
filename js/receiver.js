@@ -64,7 +64,7 @@ playerManager.setMessageInterceptor(
       return Promise.resolve(request);
     } catch (error) {
       logError('[Receiver] Error in LOAD message interceptor:', error);
-      request.media.metadata.title = `${message} ${error?.message || error}`;
+      request['media']['metadata']['title'] = `${message} ${error?.message || error}`;
       return Promise.reject(error);
     }
   }
