@@ -21,9 +21,6 @@ castReceiverOptions.shakaVersion = '4.2.2';
 console.log('[Receiver] Starting setup...');
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 
-castDebugLogger.setEnabled(true);
-      castDebugLogger.showDebugLogs(true);
-      castDebugLogger.clearDebugLogs();
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
@@ -31,6 +28,9 @@ playerManager.setMessageInterceptor(
     try {
       log('[Receiver] LOAD message intercepted.');
 
+      castDebugLogger.setEnabled(true);
+      castDebugLogger.showDebugLogs(true);
+      castDebugLogger.clearDebugLogs();
       const token = request['customData']['mediaTokenKey'];
       const auth = request['customData']['authorizationKey'];
 
