@@ -1,54 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Cast CAF Receiver</title>
-  <script src="https://cdn.jsdelivr.net/npm/mux.js@6.3.0/dist/mux.min.js"></script>
-
-  <!-- Load the Shaka Player library -->
-  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.13.2/dist/shaka-player.compiled.js"></script>
-  <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
-  <script src="https://www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0; /* Light background for contrast */
-    }
-
-    cast-media-player {
-      display: block;
-      width: 100%;
-      height: 80vh; /* Takes up 80% of the viewport height */
-    }
-
-    footer {
-      position: relative; /* Ensure footer is part of the normal flow */
-      z-index: 10;        /* Stack above the player */
-      background-color: #333; /* Dark background */
-      color: white;          /* White text */
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Elevation effect */
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-      color: white;
-    }
-  </style>
-</head>
-<body>
-<!-- Media Player -->
-<cast-media-player></cast-media-player>
-
-<!-- Footer -->
-<footer>
-  <script src="js/receiver.js"></script>
-      <label id="first-name">First name:</label>
-</footer>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Cast CAF Receiver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mux.js@5.5.3/dist/mux.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.8/dist/shaka-player.compiled.js"></script>
+    
+    <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
+    <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
+  </head>
+  <body>
+    <cast-media-player></cast-media-player>
+    <script src="js/receiver.js"></script>
+  </body>
 </html>
