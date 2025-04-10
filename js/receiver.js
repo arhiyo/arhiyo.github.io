@@ -21,9 +21,7 @@ castReceiverOptions.shakaVersion = '4.2.2';
 console.log('[Receiver] Starting setup...');
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
 
-const context = cast.framework.CastReceiverContext.getInstance();
-
-context.addEventListener(cast.framework.system.EventType.READY, () => {
+cast.framework.CastReceiverContext.getInstance().addEventListener(cast.framework.system.EventType.READY, () => {
   if (!castDebugLogger.debugOverlayElement_) {
       castDebugLogger.setEnabled(true);
       castDebugLogger.showDebugLogs(true);
