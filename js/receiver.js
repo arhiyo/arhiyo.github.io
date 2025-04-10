@@ -16,7 +16,7 @@ const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 castReceiverOptions.useShakaForHls = true;
-castReceiverOptions.shakaVersion = '4.2.2';
+castReceiverOptions.shakaVersion = '5.2.0';
 
 console.log('[Receiver] Starting setup...');
 
@@ -40,7 +40,16 @@ playerManager.setMessageInterceptor(
 
       headers[mediaTokenKey] = token;
       headers[authorizationKey] = auth;
-
+      playbackConfig.shakaConfiguration = {
+        networking: {
+          fetch: {
+            headers: {
+              [mediaTokenKey]: token,
+              [authorizationKey]: auth
+            }
+          }
+        }
+      };
       log(`[Receiver] mediaTokenKey: ${token}`);
       log(`[Receiver] authorizationKey: ${auth}`);
       request['media']['duration'] = Infinity;
