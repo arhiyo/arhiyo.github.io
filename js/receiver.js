@@ -26,6 +26,8 @@ const context = cast.framework.CastReceiverContext.getInstance();
 context.addEventListener(cast.framework.system.EventType.READY, () => {
   if (!castDebugLogger.debugOverlayElement_) {
       castDebugLogger.setEnabled(true);
+      castDebugLogger.showDebugLogs(true);
+      castDebugLogger.clearDebugLogs();
   }
 });
 
@@ -66,6 +68,7 @@ playerManager.setMessageInterceptor(
       return Promise.resolve(request);
     } catch (error) {
       logError('[Receiver] Error in LOAD message interceptor:', error);
+      castDebugLogger.debug('Tag1', `${message} ${error?.message || error}`);
       return Promise.reject(error);
     }
   }
