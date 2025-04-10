@@ -27,8 +27,11 @@ playerManager.setMessageInterceptor(
     try {
       log('[Receiver] LOAD message intercepted.');
 
-      const token = request.customData?.[mediaTokenKey];
-      const auth = request.customData?.[authorizationKey];
+      const token = request['customData']['mediaTokenKey'];
+      const auth = request['customData']['authorizationKey'];
+
+      log(`[Receiver] mediaTokenKey: ${token}`);
+      log(`[Receiver] authorizationKey: ${auth}`);
 
       if (!token || !auth) {
         logError('[Receiver] Missing authentication tokens.');
@@ -43,6 +46,8 @@ playerManager.setMessageInterceptor(
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
+
+      request.autoplay = true;
 
       request.media.contentType = TEST_STREAM_TYPE;
       request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
