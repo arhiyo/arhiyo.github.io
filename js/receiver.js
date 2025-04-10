@@ -4,72 +4,73 @@ const playerManager = context.getPlayerManager();
 const StreamType = {
   DASH: 'application/dash+xml',
   HLS: 'application/x-mpegurl'
-}
-const TEST_STREAM_TYPE = StreamType.DASH
+};
 
-let castReceiverOptions = new cast.framework.CastReceiverOptions();
-castReceiverOptions.useShakaForHls = false;
-castReceiverOptions.shakaVersion = '4.13.2';
+const TEST_STREAM_TYPE = StreamType.HLS; // Change to DASH if needed
 
-function adjustPlayerSize() {
-  const player = document.querySelector("cast-media-player");
-  const video = player?.querySelector("video");
-
-  if (!video) return; // Ensure the video element exists
-
-  video.onloadedmetadata = () => {
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const screenAspect = window.innerWidth / window.innerHeight;
-
-    if (videoAspect > screenAspect) {
-      // Landscape (16:9) - Fill width
-      player.style.width = "100vw";
-      player.style.height = "auto";
-    } else {
-      // Portrait (9:16) - Fill height
-      player.style.width = "auto";
-      player.style.height = "100vh";
-    }
-  };
-}
-
-const mediaTokenKey = 'MEDIA-TOKEN'
-const authorizationKey = 'Authorization'
-const playbackConfig = new cast.framework.PlaybackConfig();
+const mediaTokenKey = 'MEDIA-TOKEN';
+const authorizationKey = 'Authorization';
 const headers = {};
+
+const playbackConfig = new cast.framework.PlaybackConfig();
+const castReceiverOptions = new cast.framework.CastReceiverOptions();
+
+castReceiverOptions.useShakaForHls = true;
+castReceiverOptions.shakaVersion = '4.2.2';
+
+console.log('[Receiver] Starting setup...');
+
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
+    try {
+      log('[Receiver] LOAD message intercepted.');
 
-    headers[mediaTokenKey] = request['customData']['mediaTokenKey'];
-    headers[authorizationKey] = request['customData']['authorizationKey'];
+      const token = request.customData?.[mediaTokenKey];
+      const auth = request.customData?.[authorizationKey];
 
-    playbackConfig.manifestRequestHandler = requestInfo => {
-        // console.log("listen", headers[mediaTokenKey]);
-        // console.log("listen", "112322");
-      // requestInfo.headers = headers
-    };
+      if (!token || !auth) {
+        logError('[Receiver] Missing authentication tokens.');
+        throw new Error('Missing required mediaTokenKey or authorizationKey');
+      }
 
-    playerManager.setPlaybackConfig(playbackConfig);
-    const data = request.media.contentId;
+      headers[mediaTokenKey] = token;
+      headers[authorizationKey] = auth;
 
-    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
-    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
-    request.media.contentType = StreamType.HLS;
+      log(`[Receiver] mediaTokenKey: ${token}`);
+      log(`[Receiver] authorizationKey: ${auth}`);
 
-    
-    
-        const label = document.getElementById("first-name");
+      playerManager.setPlaybackConfig(playbackConfig);
+      log('[Receiver] PlaybackConfig set.');
 
-    
-    return new Promise((resolve, reject) => {
-        resolve(request);
-      }).catch(error => {
-        label.textContent = `Error: ${JSON.stringify(error)}`;
-    });
-  });
+      request.media.contentType = TEST_STREAM_TYPE;
+      request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
+      request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
 
-window.addEventListener("resize", adjustPlayerSize);
+      log(`[Receiver] Content type set to ${request.media.contentType}`);
+
+      return Promise.resolve(request);
+    } catch (error) {
+      logError('[Receiver] Error in LOAD message interceptor:', error);
+      return Promise.reject(error);
+    }
+  }
+);
 
 context.start(castReceiverOptions)
+
+function log(message) {
+  console.log(message);
+  const logDiv = document.getElementById('log');
+  if (logDiv) {
+    const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+    logDiv.innerText += `[${timestamp}] ${message}\n`;
+    logDiv.scrollTop = logDiv.scrollHeight; // Auto-scroll
+  }
+}
+
+function logError(message, error) {
+  console.error(message, error);
+  log(`${message} ${error?.message || error}`);
+}
