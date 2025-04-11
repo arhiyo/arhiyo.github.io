@@ -107,9 +107,7 @@ playerManager.setMessageInterceptor(
       delete request['currentTime'];
       delete request['playbackRate'];
 
-      log(`[Receiver] mediaTokenKey: ${token}`);
-      log(`[Receiver] authorizationKey: ${auth}`);
-      log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
+      // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
