@@ -103,11 +103,11 @@ playerManager.setMessageInterceptor(
         logError('[Receiver] Error in LOAD message interceptor:', error);
       }
 
-      delete request['media']['duration'];
-      delete request['currentTime'];
-      delete request['playbackRate'];
+      // delete request['media']['duration'];
+      // delete request['currentTime'];
+      // delete request['playbackRate'];
 
-      // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
+      log(`[Receiver] authorizationKey: ${JSON.stringify(playbackConfig, null, 2)}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
