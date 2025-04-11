@@ -69,6 +69,8 @@ playerManager.setMessageInterceptor(
       };
 
       try {
+        const video = document.getElementById('castMediaElement');
+        const shakaPlayer = new shaka.Player(video);
         const events = [
           'loadstart',
           'loadeddata',
