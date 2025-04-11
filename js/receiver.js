@@ -19,7 +19,26 @@ castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '5.2.0';
 
 console.log('[Receiver] Starting setup...');
+try {
+  const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+  castDebugLogger.setEnabled(true);
+  castDebugLogger.showDebugLogs(true);
+  castDebugLogger.showDebugOverlay(true);
+} catch (error) {
+}
 
+try {
+  const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+  castDebugLogger.setEnabled(true);
+  castDebugLogger.showDebugLogs(true);
+  castDebugLogger.showDebugOverlay(true);
+  castDebugLogger.loggerLevelByTags = {
+    'CAST_API': cast.framework.LoggerLevel.DEBUG,
+    'Media': cast.framework.LoggerLevel.DEBUG,
+    'Player': cast.framework.LoggerLevel.DEBUG,
+  };
+} catch (error) {
+}
 
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
