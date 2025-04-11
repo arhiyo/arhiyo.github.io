@@ -65,7 +65,8 @@ player.configure({
   }
 });
 try {
- player.load('request.media['id']');
+  const streamUrl = request.media.id; 
+ player.load(streamUrl);
   log('The stream has been loaded successfully!');
 } catch (error) {
   logError('Error loading the stream:', error);
