@@ -64,7 +64,12 @@ player.configure({
     rebufferingGoal: 10,
   }
 });
-
+try {
+  await player.load('request.media['id']');
+  log('The stream has been loaded successfully!');
+} catch (error) {
+  logError('Error loading the stream:', error);
+}
       // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
