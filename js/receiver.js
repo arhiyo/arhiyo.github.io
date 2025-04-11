@@ -1,23 +1,30 @@
+// Get the CastReceiverContext and PlayerManager instances
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
 
+// Define Stream Type configuration (HLS or DASH)
 const StreamType = {
   DASH: 'application/dash+xml',
   HLS: 'application/x-mpegurl',
 };
 
+// Set the stream type (HLS or DASH)
 const TEST_STREAM_TYPE = StreamType.HLS; // Change to DASH if needed
 
+// Define the keys for token and authorization headers
 const mediaTokenKey = 'MEDIA-TOKEN';
 const authorizationKey = 'Authorization';
 const headers = {};
 
+// Initialize playback config and cast receiver options
 const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
+// Set Shaka player options
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
 
+// Global error handler
 window.onerror = function (message, source, lineno, colno, error) {
   logError(`[Global Error] ${message} at ${source}:${lineno}:${colno}`, error);
 };
@@ -27,88 +34,51 @@ window.onunhandledrejection = function (event) {
   logError('[Unhandled Promise Rejection]', event.reason);
 };
 
-// Initialize the player
-const video = document.getElementById('video'); // The video element
-const player = new shaka.Player(video);
+// Set up message interceptor for 'LOAD' message type
+playerManager.setMessageInterceptor(
+  cast.framework.messages.MessageType.LOAD,
+  (request) => {
+    log('[Receiver] LOAD message intercepted.');
 
-player.attach(video)  // Attach player to video element
-  .then(() => {
-    // Intercept LOAD requests
-    playerManager.setMessageInterceptor(
-      cast.framework.messages.MessageType.LOAD,
-      (request) => {
-        log('[Receiver] LOAD message intercepted.');
+    // Extract tokens and authorization info from the request
+    const token = request['customData']?.[mediaTokenKey];
+    const auth = request['customData']?.[authorizationKey];
 
-        const token = request['customData']?.[mediaTokenKey];
-        const auth = request['customData']?.[authorizationKey];
+    log(`[Receiver] mediaTokenKey: ${token}`);
+    log(`[Receiver] authorizationKey: ${auth}`);
 
-        log(`[Receiver] mediaTokenKey: ${token}`);
-        log(`[Receiver] authorizationKey: ${auth}`);
+    if (!token || !auth) {
+      logError('[Receiver] Missing authentication tokens.');
+      throw new Error('Missing required mediaTokenKey or authorizationKey');
+    }
 
-        if (!token || !auth) {
-          logError('[Receiver] Missing authentication tokens.');
-          throw new Error('Missing required mediaTokenKey or authorizationKey');
-        }
+    // Set up headers for authentication
+    headers[mediaTokenKey] = token;
+    headers[authorizationKey] = auth;
 
-        // Set up headers for authentication
-        headers[mediaTokenKey] = token;
-        headers[authorizationKey] = auth;
+    // Set media duration as Infinity for live streams (if applicable)
+    request.media.duration = Infinity;
+    
+    // Set playback configurations and content type
+    playerManager.setPlaybackConfig(playbackConfig);
+    log('[Receiver] PlaybackConfig set.');
 
-        playbackConfig.shakaConfiguration = {
-          networking: {
-            fetch: {
-              headers: {
-                [mediaTokenKey]: token,
-                [authorizationKey]: auth,
-              },
-            },
-          },
-        };
+    request.media.contentType = TEST_STREAM_TYPE;
+    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
+    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+    log(`[Receiver] Content type set to ${request.media.contentType}`);
+    // Resolve the request to continue playback
+    return Promise.resolve(request);
+  }
+);
 
-        // Set media duration as Infinity for live streams (if applicable)
-        request.media.duration = Infinity;
+// Start the receiver context
+context.start(castReceiverOptions);
 
-        // Configure player
-        player.configure({
-          streaming: {
-            bufferingGoal: 30,  // Adjust based on your needs
-            rebufferingGoal: 10,
-          },
-        });
-
-        // Load stream URL using Shaka Player
-        const streamUrl = request.media.id; 
-        player.load(streamUrl).then(() => {
-          log('The stream has been loaded successfully!');
-        }).catch(error => {
-          logError('Error loading the stream:', error);
-        });
-
-        // Set playback configurations and content type
-        playerManager.setPlaybackConfig(playbackConfig);
-        log('[Receiver] PlaybackConfig set.');
-
-        request.media.contentType = TEST_STREAM_TYPE;
-        request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.AAC;
-        request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
-        log(`[Receiver] Content type set to ${request.media.contentType}`);
-
-        // Resolve request to continue playback
-        return Promise.resolve(request);
-      }
-    );
-
-    // Start the receiver context
-    context.start(castReceiverOptions);
-
-    // Add event listener for receiver errors
-    context.addEventListener(cast.framework.system.EventType.ERROR, (e) => {
-      logError('[Cast Receiver] Error:', e);
-    });
-
-  }).catch(error => {
-    logError('Error initializing Shaka player:', error);
-  });
+// Add event listener for receiver errors
+context.addEventListener(cast.framework.system.EventType.ERROR, (e) => {
+  logError('[Cast Receiver] Error:', e);
+});
 
 // Logging functions
 function log(message) {
