@@ -17,7 +17,14 @@ const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
+window.onerror = function (message, source, lineno, colno, error) {
+  logError(`[Global Error] ${message} at ${source}:${lineno}:${colno}`, error);
+};
 
+// Log unhandled Promise rejections
+window.onunhandledrejection = function (event) {
+  logError('[Unhandled Promise Rejection]', event.reason);
+};
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   (request) => {
