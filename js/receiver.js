@@ -55,6 +55,15 @@ playerManager.setMessageInterceptor(
         },
       };
       request['media']['duration'] = Infinity;
+      const video = document.getElementById('video');
+const player = new shaka.Player(video);
+
+player.configure({
+  streaming: {
+    bufferingGoal: 30,  // Adjust based on your needs
+    rebufferingGoal: 10,
+  }
+});
 
       // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
