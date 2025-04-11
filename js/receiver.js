@@ -15,7 +15,7 @@ const headers = {};
 const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
-castReceiverOptions.useShakaForHls = true;
+// castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
 
 console.log('[Receiver] Starting setup...');
