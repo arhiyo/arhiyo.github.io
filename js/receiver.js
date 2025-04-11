@@ -33,19 +33,16 @@ window.onerror = function (message, source, lineno, colno, error) {
 window.onunhandledrejection = function (event) {
   logError('[Unhandled Promise Rejection]', event.reason);
 };
-
+playerManager.addEventListener(cast.framework.events.EventType.ERROR, (event) => {
+  logError('[PlayerManager Error]', event);
+});
 // Set up message interceptor for 'LOAD' message type
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   (request) => {
-    log('[Receiver] LOAD message intercepted.');
-
     // Extract tokens and authorization info from the request
     const token = request['customData']['mediaTokenKey'];
     const auth = request['customData']['authorizationKey'];
-
-    log(`[Receiver] mediaTokenKey: ${token}`);
-    log(`[Receiver] authorizationKey: ${auth}`);
 
     if (!token || !auth) {
       logError('[Receiver] Missing authentication tokens.');
@@ -58,7 +55,7 @@ playerManager.setMessageInterceptor(
 
     // Set media duration as Infinity for live streams (if applicable)
     request['media']['duration'] = Infinity;
-    
+    logError('request', request);
     // Set playback configurations and content type
     playerManager.setPlaybackConfig(playbackConfig);
     log('[Receiver] PlaybackConfig set.');
