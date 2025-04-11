@@ -20,19 +20,6 @@ castReceiverOptions.shakaVersion = '5.2.0';
 
 console.log('[Receiver] Starting setup...');
 
-try {
-  const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-  castDebugLogger.setEnabled(true);
-  castDebugLogger.showDebugLogs(true);
-  castDebugLogger.showDebugOverlay(true);
-  castDebugLogger.loggerLevelByTags = {
-    'CAST_API': cast.framework.LoggerLevel.DEBUG,
-    'Media': cast.framework.LoggerLevel.DEBUG,
-    'Player': cast.framework.LoggerLevel.DEBUG,
-  };
-} catch (error) {
-}
-
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   request => {
@@ -62,12 +49,23 @@ playerManager.setMessageInterceptor(
           }
         }
       };
+      try {
+        const video = document.getElementById('castMediaElement');
+        const shakaPlayer = new shaka.Player(video);
+
+    // Attach Shaka error listener
+        shakaPlayer.addEventListener('error', event => {
+          const shakaError = event.detail;
+          logErrorShaka('[Shaka] Player error:', shakaError);
+        });
+      } catch(error) {
+        logError('[Receiver] Error in LOAD message interceptor:', error);
+      }
       log(`[Receiver] mediaTokenKey: ${token}`);
       log(`[Receiver] authorizationKey: ${auth}`);
-      log(`[Receiver] authorizationKey: ${request}`);
-      log(`[Receiver] authorizationKey: ${request['media']}`);
-      request.media['metadata']['title'] = request['media']['duration'];
-      request.media['metadata']['subtitle'] = request['media']['position'];
+      log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
+      log(`[Receiver] duration: ${request['media']['duration']}`);
+      log(`[Receiver] position: ${request['media']['position']}`);
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
       request.media.contentType = TEST_STREAM_TYPE;
@@ -94,6 +92,12 @@ function log(message) {
     logDiv.innerText += `[${timestamp}] ${message}\n`;
     logDiv.scrollTop = logDiv.scrollHeight; // Auto-scroll
   }
+}
+
+function logErrorShaka(message, error) {
+  console.error(message, error);
+  const details = typeof error === 'object' ? JSON.stringify(error, null, 2) : error;
+  log(`${message} ${details}`);
 }
 
 function logError(message, error) {
