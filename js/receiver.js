@@ -18,25 +18,6 @@ const castReceiverOptions = new cast.framework.CastReceiverOptions();
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
 
-try {
-  const castEvents = [
-    cast.framework.system.EventType.READY,
-    cast.framework.system.EventType.PLAY,
-    cast.framework.system.EventType.PAUSE,
-    cast.framework.system.EventType.PERFORMANCE,
-    cast.framework.system.EventType.ERROR,
-  ];
-
-  castEvents.forEach(event => {
-    context.addEventListener(event, (e) => {
-          log(`shaka error3`);
-      log(`[Cast Receiver] Event: ${event}`, e);
-    });
-  });
-} catch (error) {
-  logError('[Receiver] Error in logger message interceptor:', error);
-}
-
 playerManager.setMessageInterceptor(
   cast.framework.messages.MessageType.LOAD,
   (request) => {
@@ -66,55 +47,17 @@ playerManager.setMessageInterceptor(
           },
         },
       };
+      delete request['media']['duration'];
+      delete request['currentTime'];
+      delete request['playbackRate'];
 
-      try {
-        const video = document.getElementById('castMediaElement');
-        const shakaPlayer = new shaka.Player(video);
-        const events = [
-          'loadstart',
-          'loadeddata',
-          'play',
-          'pause',
-          'ended',
-          'error',
-          'ratechange',
-          'seeking',
-          'seeked',
-          'timeupdate',
-          'progress',
-          'waiting',
-          'canplay',
-          'canplaythrough',
-        ];
-
-        events.forEach(event => {
-          shakaPlayer.addEventListener(event, (e) => {
-            log(`[Shaka] Event: ${event}`, e);
-          });
-        });
-
-        // Handle Shaka error event
-        shakaPlayer.addEventListener('error', (e) => {
-          log(`shaka error2`);
-          const error = e.detail;
-          logErrorShaka('[Shaka] Error:', error);
-        });
-      } catch (error) {
-        log(`shaka error`);
-        logError('[Receiver] Error in LOAD message interceptor:', error);
-      }
-
-      // delete request['media']['duration'];
-      // delete request['currentTime'];
-      // delete request['playbackRate'];
-
-      log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
+      // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
 
       request.media.contentType = TEST_STREAM_TYPE;
-      request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
+      request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
       request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
 
       log(`[Receiver] Content type set to ${request.media.contentType}`);
