@@ -54,9 +54,7 @@ playerManager.setMessageInterceptor(
           },
         },
       };
-      delete request['media']['duration'];
-      delete request['currentTime'];
-      delete request['playbackRate'];
+      request['media']['duration'] = Infinity;
 
       // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
