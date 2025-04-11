@@ -55,6 +55,16 @@ playerManager.setMessageInterceptor(
     playbackConfig.manifestRequestHandler = requestInfo => {
         requestInfo.headers = headers;
     };
+    playbackConfig.shakaConfiguration = {
+        networking: {
+          fetch: {
+            headers: {
+              [mediaTokenKey]: token,
+              [authorizationKey]: auth,
+            },
+          },
+        },
+    };
     // Set media duration as Infinity for live streams (if applicable)
     request['media']['duration'] = Infinity;
     logError('request', request);
