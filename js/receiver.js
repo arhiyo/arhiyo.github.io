@@ -31,6 +31,7 @@ try {
 
   castEvents.forEach(event => {
     context.addEventListener(event, (e) => {
+          log(`shaka error3`);
       log(`[Cast Receiver] Event: ${event}`, e);
     });
   });
@@ -96,10 +97,12 @@ playerManager.setMessageInterceptor(
 
         // Handle Shaka error event
         shakaPlayer.addEventListener('error', (e) => {
+          log(`shaka error2`);
           const error = e.detail;
           logErrorShaka('[Shaka] Error:', error);
         });
       } catch (error) {
+        log(`shaka error`);
         logError('[Receiver] Error in LOAD message interceptor:', error);
       }
 
@@ -120,6 +123,7 @@ playerManager.setMessageInterceptor(
 
       return Promise.resolve(request);
     } catch (error) {
+      log(`promise error`);
       logError('[Receiver] Error in LOAD message interceptor:', error);
       request['media']['metadata']['title'] = `${message} ${error?.message || error}`;
       return Promise.reject(error);
@@ -150,6 +154,7 @@ function logErrorShaka(message, error) {
 }
 
 function logError(message, error) {
+  log(`error`);
   console.error(message, error);
   log(`${message} ${error?.message || error}`);
 }
