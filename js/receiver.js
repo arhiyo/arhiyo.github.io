@@ -78,7 +78,7 @@ player.attach(video)  // Attach player to video element
 
         // Load stream URL using Shaka Player
         const streamUrl = request.media.id; 
-        return player.load(streamUrl).then(() => {
+        player.load(streamUrl).then(() => {
           log('The stream has been loaded successfully!');
         }).catch(error => {
           logError('Error loading the stream:', error);
