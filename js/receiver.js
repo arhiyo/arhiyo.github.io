@@ -52,7 +52,9 @@ playerManager.setMessageInterceptor(
     // Set up headers for authentication
     headers[mediaTokenKey] = token;
     headers[authorizationKey] = auth;
-
+    playbackConfig.manifestRequestHandler = requestInfo => {
+        requestInfo.headers = headers;
+    };
     // Set media duration as Infinity for live streams (if applicable)
     request['media']['duration'] = Infinity;
     logError('request', request);
