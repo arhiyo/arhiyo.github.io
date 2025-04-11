@@ -15,10 +15,8 @@ const headers = {};
 const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
-// castReceiverOptions.useShakaForHls = true;
+castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
-
-console.log('[Receiver] Starting setup...');
 
 try {
   const castEvents = [
@@ -110,7 +108,7 @@ playerManager.setMessageInterceptor(
       // delete request['currentTime'];
       // delete request['playbackRate'];
 
-      log(`[Receiver] authorizationKey: ${JSON.stringify(playbackConfig, null, 2)}`);
+      log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
