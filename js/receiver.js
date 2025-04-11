@@ -54,7 +54,8 @@ playerManager.setMessageInterceptor(
       log(`[Receiver] authorizationKey: ${auth}`);
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
-      request['media']['metadata']['title'] = request['media'];
+      request.media['metadata']['title'] = request['media']['metadata'];
+      request.media['metadata']['subtitle'] = request['media'];
       request.media.contentType = TEST_STREAM_TYPE;
       request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
       request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
