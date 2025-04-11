@@ -19,13 +19,6 @@ castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '5.2.0';
 
 console.log('[Receiver] Starting setup...');
-try {
-  const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-  castDebugLogger.setEnabled(true);
-  castDebugLogger.showDebugLogs(true);
-  castDebugLogger.showDebugOverlay(true);
-} catch (error) {
-}
 
 try {
   const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
