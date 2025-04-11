@@ -64,6 +64,8 @@ playerManager.setMessageInterceptor(
       };
       log(`[Receiver] mediaTokenKey: ${token}`);
       log(`[Receiver] authorizationKey: ${auth}`);
+      log(`[Receiver] authorizationKey: ${request}`);
+      log(`[Receiver] authorizationKey: ${request['media']}`);
       request.media['metadata']['title'] = request['media']['duration'];
       request.media['metadata']['subtitle'] = request['media']['position'];
       playerManager.setPlaybackConfig(playbackConfig);
