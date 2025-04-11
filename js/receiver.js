@@ -108,8 +108,6 @@ playerManager.setMessageInterceptor(
       log(`[Receiver] mediaTokenKey: ${token}`);
       log(`[Receiver] authorizationKey: ${auth}`);
       log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
-      log(`[Receiver] duration: ${request['media']['duration']}`);
-      log(`[Receiver] position: ${request['media']['position']}`);
 
       playerManager.setPlaybackConfig(playbackConfig);
       log('[Receiver] PlaybackConfig set.');
