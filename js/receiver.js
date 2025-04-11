@@ -17,6 +17,7 @@ const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 castReceiverOptions.useShakaForHls = true;
 castReceiverOptions.shakaVersion = '4.14.7';
+
 window.onerror = function (message, source, lineno, colno, error) {
   logError(`[Global Error] ${message} at ${source}:${lineno}:${colno}`, error);
 };
@@ -25,79 +26,91 @@ window.onerror = function (message, source, lineno, colno, error) {
 window.onunhandledrejection = function (event) {
   logError('[Unhandled Promise Rejection]', event.reason);
 };
-playerManager.setMessageInterceptor(
-  cast.framework.messages.MessageType.LOAD,
-  (request) => {
-    try {
-      log('[Receiver] LOAD message intercepted.');
 
-      const token = request['customData']['mediaTokenKey'];
-      const auth = request['customData']['authorizationKey'];
-
-      log(`[Receiver] mediaTokenKey: ${token}`);
-      log(`[Receiver] authorizationKey: ${auth}`);
-
-      if (!token || !auth) {
-        logError('[Receiver] Missing authentication tokens.');
-        throw new Error('Missing required mediaTokenKey or authorizationKey');
-      }
-
-      headers[mediaTokenKey] = token;
-      headers[authorizationKey] = auth;
-      playbackConfig.shakaConfiguration = {
-        networking: {
-          fetch: {
-            headers: {
-              [mediaTokenKey]: token,
-              [authorizationKey]: auth,
-            },
-          },
-        },
-      };
-      request['media']['duration'] = Infinity;
-      const video = document.getElementById('video');
+// Initialize the player
+const video = document.getElementById('video'); // The video element
 const player = new shaka.Player(video);
 
-player.configure({
-  streaming: {
-    bufferingGoal: 30,  // Adjust based on your needs
-    rebufferingGoal: 10,
-  }
-});
-try {
-  const streamUrl = request.media.id; 
- player.load(streamUrl);
-  log('The stream has been loaded successfully!');
-} catch (error) {
-  logError('Error loading the stream:', error);
-}
-      // log(`[Receiver] authorizationKey: ${JSON.stringify(request, null, 2)}`);
+player.attach(video)  // Attach player to video element
+  .then(() => {
+    // Intercept LOAD requests
+    playerManager.setMessageInterceptor(
+      cast.framework.messages.MessageType.LOAD,
+      (request) => {
+        log('[Receiver] LOAD message intercepted.');
 
-      playerManager.setPlaybackConfig(playbackConfig);
-      log('[Receiver] PlaybackConfig set.');
+        const token = request['customData']?.[mediaTokenKey];
+        const auth = request['customData']?.[authorizationKey];
 
-      request.media.contentType = TEST_STREAM_TYPE;
-      request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.AAC;
-      request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+        log(`[Receiver] mediaTokenKey: ${token}`);
+        log(`[Receiver] authorizationKey: ${auth}`);
 
-      log(`[Receiver] Content type set to ${request.media.contentType}`);
+        if (!token || !auth) {
+          logError('[Receiver] Missing authentication tokens.');
+          throw new Error('Missing required mediaTokenKey or authorizationKey');
+        }
 
-      return Promise.resolve(request);
-    } catch (error) {
-      log(`promise error`);
-      logError('[Receiver] Error in LOAD message interceptor:', error);
-      request['media']['metadata']['title'] = `${message} ${error?.message || error}`;
-      return Promise.reject(error);
-    }
-  }
-);
+        // Set up headers for authentication
+        headers[mediaTokenKey] = token;
+        headers[authorizationKey] = auth;
 
-context.start(castReceiverOptions);
+        playbackConfig.shakaConfiguration = {
+          networking: {
+            fetch: {
+              headers: {
+                [mediaTokenKey]: token,
+                [authorizationKey]: auth,
+              },
+            },
+          },
+        };
 
-context.addEventListener(cast.framework.system.EventType.ERROR, (e) => {
-  logError('[Cast Receiver] Error:', e);
-});
+        // Set media duration as Infinity for live streams (if applicable)
+        request.media.duration = Infinity;
 
+        // Configure player
+        player.configure({
+          streaming: {
+            bufferingGoal: 30,  // Adjust based on your needs
+            rebufferingGoal: 10,
+          },
+        });
+
+        // Load stream URL using Shaka Player
+        const streamUrl = request.media.id; 
+        return player.load(streamUrl).then(() => {
+          log('The stream has been loaded successfully!');
+        }).catch(error => {
+          logError('Error loading the stream:', error);
+        });
+
+        // Set playback configurations and content type
+        playerManager.setPlaybackConfig(playbackConfig);
+        log('[Receiver] PlaybackConfig set.');
+
+        request.media.contentType = TEST_STREAM_TYPE;
+        request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.AAC;
+        request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+        log(`[Receiver] Content type set to ${request.media.contentType}`);
+
+        // Resolve request to continue playback
+        return Promise.resolve(request);
+      }
+    );
+
+    // Start the receiver context
+    context.start(castReceiverOptions);
+
+    // Add event listener for receiver errors
+    context.addEventListener(cast.framework.system.EventType.ERROR, (e) => {
+      logError('[Cast Receiver] Error:', e);
+    });
+
+  }).catch(error => {
+    logError('Error initializing Shaka player:', error);
+  });
+
+// Logging functions
 function log(message) {
   console.log(message);
   const logDiv = document.getElementById('log');
@@ -108,14 +121,8 @@ function log(message) {
   }
 }
 
-function logErrorShaka(message, error) {
+function logError(message, error) {
   console.error(message, error);
   const details = typeof error === 'object' ? JSON.stringify(error, null, 2) : error;
   log(`${message} ${details}`);
-}
-
-function logError(message, error) {
-  log(`error`);
-  console.error(message, error);
-  log(`${message} ${error?.message || error}`);
 }
