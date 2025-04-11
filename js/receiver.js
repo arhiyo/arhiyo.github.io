@@ -41,8 +41,8 @@ playerManager.setMessageInterceptor(
     log('[Receiver] LOAD message intercepted.');
 
     // Extract tokens and authorization info from the request
-    const token = request['customData']?.[mediaTokenKey];
-    const auth = request['customData']?.[authorizationKey];
+    const token = request['customData']['mediaTokenKey'];
+    const auth = request['customData']['authorizationKey'];
 
     log(`[Receiver] mediaTokenKey: ${token}`);
     log(`[Receiver] authorizationKey: ${auth}`);
@@ -57,7 +57,7 @@ playerManager.setMessageInterceptor(
     headers[authorizationKey] = auth;
 
     // Set media duration as Infinity for live streams (if applicable)
-    request.media.duration = Infinity;
+    request['media']['duration'] = Infinity;
     
     // Set playback configurations and content type
     playerManager.setPlaybackConfig(playbackConfig);
