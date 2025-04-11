@@ -61,8 +61,8 @@ playerManager.setMessageInterceptor(
     log('[Receiver] PlaybackConfig set.');
 
     request.media.contentType = TEST_STREAM_TYPE;
-    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.FMP4;
-    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.FMP4;
+    request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
+    request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     log(`[Receiver] Content type set to ${request.media.contentType}`);
     // Resolve the request to continue playback
     return Promise.resolve(request);
