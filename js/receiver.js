@@ -10,7 +10,7 @@ const STREAM_TYPE = StreamType.HLS;
 const mediaTokenKey = 'MEDIA-TOKEN';
 const authorizationKey = 'Authorization';
 const headers = {};
-const DEBUG = false
+const DEBUG = true
 // Initialize playback config and cast receiver options
 const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
