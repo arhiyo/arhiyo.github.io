@@ -43,9 +43,6 @@ playerManager.setMessageInterceptor(
     // Set up headers for authentication
     headers[mediaTokenKey] = token;
     headers[authorizationKey] = auth;
-    playbackConfig.manifestRequestHandler = requestInfo => {
-        requestInfo.headers = headers;
-    };
     playbackConfig.shakaConfiguration = {
         networking: {
           fetch: {
@@ -57,13 +54,14 @@ playerManager.setMessageInterceptor(
         },
     };
 
+    playbackConfig.manifestRequestHandler = requestInfo => {
+        requestInfo.headers = headers;
+    };
     // Set media duration as Infinity for live streams (if applicable)
-    logError('request', request);
     // Set playback configurations and content type
     playerManager.setPlaybackConfig(playbackConfig);
     log('[Receiver] PlaybackConfig set.');
 
-    request['media']['duration'] = Infinity;
     request.media.contentType = StreamType.HLS;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
