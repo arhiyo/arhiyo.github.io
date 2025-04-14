@@ -17,7 +17,7 @@ const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 // Set Shaka player options
 castReceiverOptions.useShakaForHls = true;
-castReceiverOptions.shakaVersion = '4.8.20';
+castReceiverOptions.shakaVersion = '4.9.36';
 
 // Global error handler
 window.onerror = function (message, source, lineno, colno, error) {
@@ -59,7 +59,7 @@ playerManager.setMessageInterceptor(
     // Set media duration as Infinity for live streams (if applicable)
     // Set playback configurations and content type
     playerManager.setPlaybackConfig(playbackConfig);
-    log('[Receiver] PlaybackConfig set.');
+    log('[Receiver] PlaybackConfig set.36');
 
     request.media.contentType = STREAM_TYPE;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
