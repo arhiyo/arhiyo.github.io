@@ -4,14 +4,34 @@
     <meta charset="utf-8">
     <title>Cast CAF Receiver</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <script src="https://cdn.jsdelivr.net/npm/mux.js@latest/dist/mux.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.12/dist/shaka-player.compiled.js"></script>
     
     <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
     <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
+    <style>
+    #log {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-height: 80%;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.8);
+      color: #000;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 8px;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      z-index: 9999;
+    }
+  </style>
   </head>
   <body>
     <cast-media-player></cast-media-player>
     <script src="js/receiver.js"></script>
+    <div id="log">[Log Initialized]</div>
   </body>
 </html>
