@@ -10,7 +10,7 @@ const STREAM_TYPE = StreamType.HLS;
 const mediaTokenKey = 'MEDIA-TOKEN';
 const authorizationKey = 'Authorization';
 const headers = {};
-
+const DEBUG = false
 // Initialize playback config and cast receiver options
 const playbackConfig = new cast.framework.PlaybackConfig();
 const castReceiverOptions = new cast.framework.CastReceiverOptions();
@@ -38,11 +38,6 @@ playerManager.setMessageInterceptor(
     // Extract tokens and authorization info from the request
     const token = request['customData']['mediaTokenKey'];
     const auth = request['customData']['authorizationKey'];
-
-    if (!token || !auth) {
-      logError('[Receiver] Missing authentication tokens.');
-      throw new Error('Missing required mediaTokenKey or authorizationKey');
-    }
 
     // Set up headers for authentication
     headers[mediaTokenKey] = token;
@@ -85,8 +80,13 @@ context.addEventListener(cast.framework.system.EventType.ERROR, (e) => {
 
 // Logging functions
 function log(message) {
-  console.log(message);
   const logDiv = document.getElementById('log');
+  if (!DEBUG) {
+    logDiv.style.display = 'none';
+    return;
+  }
+  if (logDiv) logDiv.style.display = 'block';
+  console.log(message);
   if (logDiv) {
     const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
     logDiv.innerText += `[${timestamp}] ${message}\n`;
@@ -95,6 +95,10 @@ function log(message) {
 }
 
 function logError(message, error) {
+  if (!DEBUG) {
+    logDiv.style.display = 'none';
+    return;
+  }
   console.error(message, error);
   const details = typeof error === 'object' ? JSON.stringify(error, null, 2) : error;
   log(`${message} ${details}`);
