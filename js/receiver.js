@@ -1,7 +1,11 @@
 // Get the CastReceiverContext and PlayerManager instances
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
-
+const StreamType = {
+  DASH: 'application/dash+xml',
+  HLS: 'application/x-mpegurl',
+};
+const STREAM_TYPE = StreamType.HLS; 
 // Define the keys for token and authorization headers
 const mediaTokenKey = 'MEDIA-TOKEN';
 const authorizationKey = 'Authorization';
@@ -62,7 +66,7 @@ playerManager.setMessageInterceptor(
     playerManager.setPlaybackConfig(playbackConfig);
     log('[Receiver] PlaybackConfig set.');
 
-    request.media.contentType = StreamType.HLS;
+    request.media.contentType = STREAM_TYPE;
     request.media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.TS;
     request.media.hlsVideoSegmentFormat = cast.framework.messages.HlsVideoSegmentFormat.TS;
     log(`[Receiver] Content type set to ${request.media.contentType}`);
