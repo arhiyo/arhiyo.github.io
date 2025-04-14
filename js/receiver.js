@@ -54,7 +54,6 @@ playerManager.setMessageInterceptor(
     headers[authorizationKey] = auth;
 
     // Set media duration as Infinity for live streams (if applicable)
-    request['media']['duration'] = Infinity;
     logError('request', request);
     // Set playback configurations and content type
     playerManager.setPlaybackConfig(playbackConfig);
