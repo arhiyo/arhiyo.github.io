@@ -43,6 +43,9 @@ playerManager.setMessageInterceptor(
     headers[mediaTokenKey] = token;
     headers[authorizationKey] = auth;
     playbackConfig.shakaConfiguration = {
+        mediaSource: {
+          forceTransmux: true
+        },
         networking: {
           fetch: {
             headers: {
