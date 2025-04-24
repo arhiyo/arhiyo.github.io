@@ -46,6 +46,11 @@ playerManager.setMessageInterceptor(
         mediaSource: {
           forceTransmux: true
         },
+        manifest: {
+          dash: {
+            ignoreDrmInfo: true
+          }
+        },
         networking: {
           fetch: {
             headers: {
