@@ -17,7 +17,7 @@ const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 // Set Shaka player options
 castReceiverOptions.useShakaForHls = true;
-castReceiverOptions.shakaVersion = '4.8.2';
+castReceiverOptions.shakaVersion = '4.7.14';
 
 // Global error handler
 window.onerror = function (message, source, lineno, colno, error) {
